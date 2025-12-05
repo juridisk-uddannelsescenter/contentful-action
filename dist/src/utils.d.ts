@@ -17,16 +17,17 @@ export declare const delay: (time?: number) => Promise<void>;
  * Convert fileNames to versions
  * @example
  * filenameToVersion("1.js") // "1"
+ * filenameToVersion("1.ts") // "1"
  * filenameToVersion("1.0.1.js") // "1.0.1"
  */
 export declare const filenameToVersion: (file: string) => string;
 /**
  * Convert versions to filenames
  * @example
- * versionToFilename("1") // "1.js"
- * versionToFilename("1.0.1") // "1.0.1.js"
+ * versionToFilename("1") // "1.js" or "1.ts"
+ * versionToFilename("1.0.1") // "1_0_1.js" or "1_0_1.ts"
  */
-export declare const versionToFilename: (version: string) => string;
+export declare const versionToFilename: (version: string, migrationsDir?: string) => string;
 /**
  * Convert a branchName to a valid environmentName
  * @param branchName
