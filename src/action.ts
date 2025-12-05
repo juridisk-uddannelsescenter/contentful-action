@@ -149,7 +149,7 @@ export const runAction = async (space): Promise<void> => {
   while ((migrationToRun = migrationsToRun.shift())) {
     const filePath = path.join(
       MIGRATIONS_DIR,
-      versionToFilename(migrationToRun)
+      versionToFilename(migrationToRun, MIGRATIONS_DIR)
     );
     Logger.verbose(`Running ${filePath}`);
     await runMigration(
@@ -157,7 +157,7 @@ export const runAction = async (space): Promise<void> => {
         filePath,
       })
     );
-    Logger.success(`Migration script ${migrationToRun}.js succeeded`);
+    Logger.success(`Migration script ${migrationToRun} succeeded`);
 
     mutableStoredVersionEntry.fields.version[defaultLocale] = migrationToRun;
     mutableStoredVersionEntry = await mutableStoredVersionEntry.update();

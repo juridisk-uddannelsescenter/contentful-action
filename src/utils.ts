@@ -54,24 +54,36 @@ export const delay = (time = DELAY): Promise<void> =>
  * Convert fileNames to versions
  * @example
  * filenameToVersion("1.js") // "1"
+ * filenameToVersion("1.ts") // "1"
  * filenameToVersion("1.0.1.js") // "1.0.1"
  */
 export const filenameToVersion = (file: string): string => {
   Logger.success(`filenameToVersion function`)
   Logger.info(`file: ${file}`)
-  return file.replace(/\.js$/, "").replace(/_/g, ".");
+  return file.replace(/\.[jt]s$/, "").replace(/_/g, ".");
 }
 
 /**
  * Convert versions to filenames
  * @example
- * versionToFilename("1") // "1.js"
- * versionToFilename("1.0.1") // "1.0.1.js"
+ * versionToFilename("1") // "1.js" or "1.ts"
+ * versionToFilename("1.0.1") // "1_0_1.js" or "1_0_1.ts"
  */
-export const versionToFilename = (version: string): string => {
+export const versionToFilename = (version: string, migrationsDir?: string): string => {
   Logger.success(`versionToFilename function`)
   Logger.info(`version: ${version}`)
-  return `${version.replace(/\\./g, "_")}.js`;
+  const base = version.replace(/\./g, "_");
+
+  // If migrationsDir provided, check which extension exists
+  if (migrationsDir) {
+    const fs = require("fs");
+    const path = require("path");
+    if (fs.existsSync(path.join(migrationsDir, `${base}.ts`))) {
+      return `${base}.ts`;
+    }
+  }
+
+  return `${base}.js`;
 }
 
 /**
